@@ -1,17 +1,16 @@
-//includes
 const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
+const PORT = process.env.PORT || 5000;
+const tasksRouter = require('./routes/tasks.router')
 
-//uses 
+app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static('server/public'));
 
-//globals
-const port = 5000;
+// ROUTES
+app.use('/tasks', tasksRouter)
 
-//spin up server 
-app.listen(port, ()=>{
-    console.log('server up on:', port);
-})
-
-// routes
+// Start listening for requests on a specific port
+app.listen(PORT, () => {
+  console.log('listening on port', PORT);
+});
