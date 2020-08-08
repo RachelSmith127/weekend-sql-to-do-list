@@ -1,5 +1,11 @@
 $(document).ready(onReady);
 
-function onRead(){
-    console.log('JQ');
+function addItem(e){
+    e.preventDefault();
+    console.log('in addItem');
+}
+
+
+function onReady(){
+    $('#taskBtn').on('click', addItem);
 }
