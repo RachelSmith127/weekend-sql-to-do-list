@@ -22,5 +22,3 @@ This app uses, Node, express, bootstrap, json, CSS, html, and pg.
 
 Thanks to Prime Digital Academy who equipped and helped me to make this application a reality. Thank you Dane and Kris for teaching me how to use these programing languages! 
 special shout out to Alex Severson and Vira for helping me get unstuck when I ran into roadblocks. 
-
-Additional README details can be found [here](https://github.com/PrimeAcademy/readme-template/blob/master/README.md).
