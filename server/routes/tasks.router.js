@@ -20,4 +20,28 @@ pool.on('error', (error) =>{
     console.log('error with pool', error)
 });
 
+// router.get('/', (req, res) => {
+//     let queryText = `SELECT * FROM "tasks";`
+//     //go to db
+//     //get the tasks
+//     pool.query(queryText).then(( result) => {
+//         console.log(result.rows);//result is too big, we care about rows
+//         res.send(result.rows);
+//     }).catch((error) => {// catch if not working
+//         console.log('error in GET', error);
+//         //all good servers respond
+//         res.sendStatus(500);
+//     })
+//     //send songs back to client! 
+//     // res.send(tasks)
+// });
+
+// router.post('/', (req, res) => {
+//     let queryText = `
+//     INSERT INTO "tasks" (INSERT INTO "tasks" ("actionItem", "levelOfImportance", "deadline", "complete", "additionalNotes")
+//     VALUES ($1, $2, $3, $4);
+//     `; //sanitization
+//     console.log(req.body);
+// })
+
 module.exports = tasksRouter;
