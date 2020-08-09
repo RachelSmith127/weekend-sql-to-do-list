@@ -55,7 +55,7 @@ function getTasks(){
     });
   }
   
-  // POST request to submit koala to DB
+  // POST request to submit task to DB
 function saveTask(newTask) {
     $.ajax({
       method: 'POST',
@@ -70,6 +70,7 @@ function saveTask(newTask) {
     })
   }
 
+  //Append table and table data to DOM 
   function appendTasks(response) {
     $('#viewTasks').empty();
     for(let i = 0; i < response.length; i += 1) {
@@ -93,7 +94,7 @@ function saveTask(newTask) {
         $tr.append(`<td>${task.complete}</td>`);
         $tr.append(`<td>${task.additionalNotes}</td>`);
         $tr.append(
-          `<td><button class="completeBtn">Complete</button></td>`
+          `<td><button class="completeBtn alert alert-success">Complete</button></td>`
         );
       } else {
         $tr = $('<tr class="color"></tr>');
@@ -105,17 +106,18 @@ function saveTask(newTask) {
       $tr.append(`<td>${task.complete}</td>`);
       $tr.append(`<td>${task.additionalNotes}</td>`);
         $tr.append(
-          `<td><button class="uncompleteBtn">Mark as Uncompleted</button></td>`
+          `<td><button class="uncompleteBtn btn btn-warning">Mark as Incomplete</button></td>`
         );
       }
       $tr.append(
-        `<td><button class="deleteBtn">DELETE</button></td>`
+        `<td><button class="deleteBtn btn btn-danger">DELETE</button></td>`
       );      
       $('#viewTasks').append($tr);
       
     }
   }
 
+ //DELETE rows from task list
   function deleteTask(){
     
     // .then((willDelete) => {
@@ -152,7 +154,7 @@ function saveTask(newTask) {
       console.log('In complete', error);
     })
   }
-
+//Allows user to revers complete 
   function unCompleteTask () {
     console.log('Whops that was not complete!');
     // $(this).closest('tr').removeClass("color");
@@ -170,7 +172,7 @@ function saveTask(newTask) {
       console.log('In uncomplete', error);
     })
   }
-  
+  //clears inputs after they have loaded
   function clearInput() {
     $('#actionItemIn').val(''),
     $('#levelOfImportanceIn').val(''),
