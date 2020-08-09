@@ -1,5 +1,18 @@
 .color {
 
-    background-color: green;
+    background-color:#70db70;
     
+
 }
+
+.checkmark {
+    display: inline-block;
+    transform: rotate(45deg);
+    height: 25px;
+    width: 12px;
+    margin-left: 60%; 
+    border-bottom: 7px solid #78b13f;
+    border-right: 7px solid #78b13f;
+  }
+
+  body {background-color:#cccccc;}
