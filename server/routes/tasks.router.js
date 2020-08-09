@@ -1,7 +1,7 @@
 //includes
 const express = require('express');
 // const bodyParser = require('body-parser');
-const tasksRouter = express.Router();
+const taskRouter = express.Router();
 const pg = require('pg');
 //SET PG to connect to DB
 const Pool = pg.Pool;
@@ -51,4 +51,39 @@ taskRouter.post('/', (req, res) => {
     
 });
 
-module.exports = tasksRouter;
+//PUT
+taskRouter.put("/T/:id", (req, res) => {
+    console.log("In Put", req.params.id, req.body);
+    let queryText = `
+        UPDATE "tasks"
+        SET "complete" = 'YES'
+        WHERE "id" = $1;
+        `;
+    pool
+      .query(queryText, [req.params.id])
+      .then((result) => {
+        res.sendStatus(200);
+      })
+      .catch((error) => {
+        console.log("error in complete", error);
+        res.sendStatus(500);
+      });
+  });
+
+ //DELETE 
+  taskRouter.delete('/:id', (req, res) => {
+    let reqId = req.params.id;
+    console.log('Delete request for id', reqId);
+    let sqlText = 'DELETE FROM "tasks" WHERE "id"=$1;';
+    pool.query(sqlText, [req.params.id])
+      .then( (result) => {
+        console.log('task deleted');
+        res.sendStatus(200);
+      })
+      .catch( (error) => {
+        console.log(`Error making database query ${sqlText}`, error);
+        res.sendStatus(500); // Good server always responds
+      })
+  })
+
+module.exports = taskRouter;
