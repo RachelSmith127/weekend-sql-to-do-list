@@ -69,7 +69,7 @@ function saveTask(newTask) {
     })
   }
 
-  function appendKoalas(response) {
+  function appendTasks(response) {
     $('#viewTasks').empty();
     for(let i = 0; i < response.length; i += 1) {
       let task = response[i];
@@ -80,18 +80,60 @@ function saveTask(newTask) {
       $tr.append(`<td>${task.deadline}</td>`);
       $tr.append(`<td>${task.complete}</td>`);
       $tr.append(`<td>${task.additionalNotes}</td>`);
-      if (task.readyForTransfer === 'NO') {
+      if (task.complete === 'NO') {
         $tr.append(
-          `<td><button class="transferBtn btn btn-outline-info">Complete</button></td>`
+          `<td><button class="completeBtn">Complete</button></td>`
         );
       } else {
         $tr.append(
-          `<td><button class="unTransferBtn btn btn-outline-warning">not complete</button></td>`
+          `<td><button class="uncompleteBtn">not complete</button></td>`
         );
       }
       $tr.append(
-        `<td><button class="deleteBtn btn btn-outline-danger">DELETE</button></td>`
+        `<td><button class="deleteBtn">DELETE</button></td>`
       );      
       $('#viewTasks').append($tr);
     }
   }
+
+  function completingTask() {
+    console.log('Completing task!');
+    let idToComplete = $(this).closest('tr').data('task');
+    let completeStatus = {
+      complete: 'YES'
+    };
+    $.ajax({
+      method: 'PUT',
+      url: `/tasks/T/${idToComplete}`, 
+      data: completeStatus
+    }).then(function() {
+      getTasks();
+    }).catch(function(error) {
+      console.log('In complete', error);
+    })
+  }
+
+  function unCompleteTask () {
+    console.log('Whops that was not complete!');
+    let idToComplete = $(this).closest('tr').data('task');
+    let completeStatus = {
+      complete: 'NO'
+    };
+    $.ajax({
+      method: 'PUT',
+      url: `/tasks/U/${idToComplete}`, 
+      data: completeStatus
+    }).then(function() {
+      getTasks();
+    }).catch(function(error) {
+      console.log('In unomplete', error);
+    })
+  }
+  
+  function clearInput() {
+    $('#actionItemIn').val(''),
+    $('#levelOfImportanceIn').val(''),
+    $('#deadlineIn').val(''),
+    $('#completeIn').val(''),
+    $('#additionalNotesIn').val('')
+};
