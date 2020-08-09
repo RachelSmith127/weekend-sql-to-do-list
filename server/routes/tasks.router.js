@@ -1,12 +1,12 @@
 //includes
 const express = require('express');
-const bodyParser = require('body-parser');
+// const bodyParser = require('body-parser');
+const tasksRouter = express.Router();
 const pg = require('pg');
-
 //SET PG to connect to DB
-const Pool = pg.pool;
-const pool = new Pool ({ //pool constructor
-    database: 'tasks', //connecting to our database
+const Pool = pg.Pool;
+const pool = new Pool({
+    database: 'tasks',
     port: 5432,
     host: 'localhost'
 });
@@ -18,16 +18,6 @@ pool.on('connect', () =>{
 
 pool.on('error', (error) =>{
     console.log('error with pool', error)
-})
+});
 
-app.use(bodyParser.urlencoded({extended: true}));
-//uses 
-app.use(express.static('server/public'));
-
-//spin up server 
-app.listen(port, ()=>{
-    console.log('server up on:', port);
-})
-
-// routes
 module.exports = tasksRouter;
