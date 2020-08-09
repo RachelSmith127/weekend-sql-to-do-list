@@ -96,7 +96,26 @@ function saveTask(newTask) {
     }
   }
 
-  function completingTask() {
+  function deleteTask(){
+    ({
+     
+    }).then((willDelete) => {
+        let id = $(this).closest('tr').data('task');
+        $.ajax({
+      method: 'DELETE',
+      url: `/Tasks/${id}`
+    })
+    .then(function(response){
+      console.log('Deleted it!');
+      getTasks();
+    })
+    .catch(function(error) {
+      alert('Error on delete line 79', error);
+    })
+    
+    })
+  }
+  function completeTask() {
     console.log('Completing task!');
     let idToComplete = $(this).closest('tr').data('task');
     let completeStatus = {
