@@ -4,6 +4,7 @@ $(document).ready(function(){
     setupClickListeners();
     //load existing tasks on page load
     // $('#taskBtn').on('click', addItem);
+    getTasks();
     $('#viewTasks').on('click', '.deleteBtn', deleteTask);
 });
 
@@ -21,14 +22,16 @@ function setupClickListeners() {
         deadline: $('#deadlineIn').val(),
         complete: $('#completeIn').val(),
         additionalNotes: $('#additionalNotesIn').val()
-        };
+        }; 
+        // saveTask(taskToSend);
         if(taskToSend.actionItem === ''|| taskToSend.levelOfImportance === '' || taskToSend.deadline === '' || taskToSend.complete === '' || taskToSend.additionalNotes === ''){
-            ('Please enter all fields.');
-        } else if (taskToSend.complete === 'YES' || taskToSend.complete === 'NO'){
-            (taskToSend);
+           alert('Please enter all fields.');
+        } else if (taskToSend.complete.toLowerCase() === 'yes' || taskToSend.complete.toLowerCase() === 'no'){
+            // (taskToSend);
+            saveTask(taskToSend);
             clearInput();
         }else{
-            ('Complete input must be YES or NO')
+            alert('Complete input must be YES or NO')
         }
 
     });
@@ -60,9 +63,7 @@ function saveTask(newTask) {
       data: newTask
     }).then((response) => { 
       console.log('POST new Task');
-      ("New task added to the pool!", {
-        
-      });
+    //   ("New task added to the pool!");
       getTasks();
     }).catch(function (error){ 
       console.log(error);
@@ -73,34 +74,53 @@ function saveTask(newTask) {
     $('#viewTasks').empty();
     for(let i = 0; i < response.length; i += 1) {
       let task = response[i];
-      let $tr = $('<tr></tr>');
+    //   let $tr = $('<tr></tr>');
+    //   $tr.data('task', task.id);
+    //   $tr.append(`<td>${task.id}</td>`);
+    //   $tr.append(`<td>${task.actionItem}</td>`);
+    //   $tr.append(`<td>${task.levelOfImportance}</td>`);
+    //   $tr.append(`<td>${task.deadline}</td>`);
+    //   $tr.append(`<td>${task.complete}</td>`);
+    //   $tr.append(`<td>${task.additionalNotes}</td>`);
+    let $tr = $('<tr></tr>');
+      if (task.complete.toLowerCase() === 'no') {
+        // let $tr = $('<tr></tr>');
+        $tr.data('task', task.id);
+        $tr.append(`<td>${task.id}</td>`);
+        $tr.append(`<td>${task.actionItem}</td>`);
+        $tr.append(`<td>${task.levelOfImportance}</td>`);
+        $tr.append(`<td>${task.deadline}</td>`);
+        $tr.append(`<td>${task.complete}</td>`);
+        $tr.append(`<td>${task.additionalNotes}</td>`);
+        $tr.append(
+          `<td><button class="completeBtn">Complete</button></td>`
+        );
+      } else {
+        $tr = $('<tr class="color"></tr>');
       $tr.data('task', task.id);
+      $tr.append(`<td>${task.id}</td>`);
       $tr.append(`<td>${task.actionItem}</td>`);
       $tr.append(`<td>${task.levelOfImportance}</td>`);
       $tr.append(`<td>${task.deadline}</td>`);
       $tr.append(`<td>${task.complete}</td>`);
       $tr.append(`<td>${task.additionalNotes}</td>`);
-      if (task.complete === 'NO') {
         $tr.append(
-          `<td><button class="completeBtn">Complete</button></td>`
-        );
-      } else {
-        $tr.append(
-          `<td><button class="uncompleteBtn">not complete</button></td>`
+          `<td><button class="uncompleteBtn">Mark as Uncompleted</button></td>`
         );
       }
       $tr.append(
         `<td><button class="deleteBtn">DELETE</button></td>`
       );      
       $('#viewTasks').append($tr);
+      
     }
   }
 
   function deleteTask(){
-    ({
-     
-    }).then((willDelete) => {
+    
+    // .then((willDelete) => {
         let id = $(this).closest('tr').data('task');
+        console.log(id)
         $.ajax({
       method: 'DELETE',
       url: `/Tasks/${id}`
@@ -113,10 +133,11 @@ function saveTask(newTask) {
       alert('Error on delete line 79', error);
     })
     
-    })
-  }
+    }
+  
   function completeTask() {
     console.log('Completing task!');
+    // let colorToComplete = $(this).closest('tr').addClass("color");
     let idToComplete = $(this).closest('tr').data('task');
     let completeStatus = {
       complete: 'YES'
@@ -134,6 +155,7 @@ function saveTask(newTask) {
 
   function unCompleteTask () {
     console.log('Whops that was not complete!');
+    // $(this).closest('tr').removeClass("color");
     let idToComplete = $(this).closest('tr').data('task');
     let completeStatus = {
       complete: 'NO'
@@ -145,7 +167,7 @@ function saveTask(newTask) {
     }).then(function() {
       getTasks();
     }).catch(function(error) {
-      console.log('In unomplete', error);
+      console.log('In uncomplete', error);
     })
   }
   

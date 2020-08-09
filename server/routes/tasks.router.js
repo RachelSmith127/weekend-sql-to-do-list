@@ -6,7 +6,7 @@ const pg = require('pg');
 //SET PG to connect to DB
 const Pool = pg.Pool;
 const pool = new Pool({
-    database: 'tasks',
+    database: 'weekend-to-do-app',
     port: 5432,
     host: 'localhost'
 });
@@ -36,9 +36,9 @@ taskRouter.get('/', (req, res) => {
 taskRouter.post('/', (req, res) => {
     let newTask  = req.body;
     console.log('Adding new task:', newTask);
-    let queryTex = `
-    INSERT INTO "tasks" (INSERT INTO "tasks" ("actionItem", "levelOfImportance", "deadline", "complete", "additionalNotes")
-    VALUES ($1, $2, $3, $4);
+    let queryText = `
+    INSERT INTO "tasks" ("actionItem", "levelOfImportance", "deadline", "complete", "additionalNotes")
+    VALUES ($1, $2, $3, $4, $5);
     `; //sanitization
     pool.query(queryText, [newTask.actionItem, newTask.levelOfImportance, newTask.deadline, newTask.complete, newTask.additionalNotes])
     .then(result => {
@@ -57,6 +57,24 @@ taskRouter.put("/T/:id", (req, res) => {
     let queryText = `
         UPDATE "tasks"
         SET "complete" = 'YES'
+        WHERE "id" = $1;
+        `;
+    pool
+      .query(queryText, [req.params.id])
+      .then((result) => {
+        res.sendStatus(200);
+      })
+      .catch((error) => {
+        console.log("error in complete", error);
+        res.sendStatus(500);
+      });
+  });
+
+  taskRouter.put("/U/:id", (req, res) => {
+    console.log("In Put", req.params.id, req.body);
+    let queryText = `
+        UPDATE "tasks"
+        SET "complete" = 'NO'
         WHERE "id" = $1;
         `;
     pool
